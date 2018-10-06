@@ -27,7 +27,7 @@ public class HtoHApplicationController {
 		try {
 			custDetailsRersponse = h2hService.saveApplicationDetails(customerDetails);
 		} catch (Exception e) {
-			System.out.println("Its error");
+			System.out.println("Its errors");
 			e.printStackTrace();
 		}
 
