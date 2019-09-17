@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- <restConfiguration component="restlet" port="8082" consumes="application/json" 
+	produces="application/json" host="localhost" /> -->
+
+<rests xmlns="http://camel.apache.org/schema/spring">
+	<rest path="/say" apiDocs="true">
+		<description>API to manage camel_swagger</description>`
+		<get uri="/hello" consumes="application/json" produces="application/json">
+			<to uri="direct:hello" />
+		</get>
+		<get uri="/{name}/tata" consumes="application/json" produces="application/json">
+			<to uri="direct:tata" />
+		</get>
+		<get uri="/{name}/goodbye" consumes="application/json" produces="application/json">
+			<to uri="direct:goodbye" />
+		</get>
+		<post uri="/testPost" consumes="application/json" produces="application/json"
+			type="com.rj.model.Customer">
+			<to uri="direct:testPost" />
+		</post>
+
+	</rest>
+</rests>
+

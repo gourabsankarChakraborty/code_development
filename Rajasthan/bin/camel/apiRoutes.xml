@@ -1,0 +1,73 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route>
+		<from uri="direct:hello" />
+		<log message="Got the value ${body}" />
+		<setHeader headerName="CamelHttpMethod">
+			<constant>GET</constant>
+		</setHeader>
+		<setHeader headerName="CamelHttpUri">
+			<constant>http://localhost:8083/abc/getCustomerInformation</constant>
+		</setHeader>
+		<!-- <to uri="bean:CamelInputProcessor?method=process" /> -->
+		<to uri="http://localhost:8083/abc/getCustomerInformation" />
+		<process ref="CamelOutputProcessor" />
+
+	</route>
+	<route>
+		<from uri="direct:goodbye" />
+		<log message="goodbye route called the value ${body}" />
+		<to uri="bean:CamelInputProcessor?method=process" />
+		<setHeader headerName="CamelHttpMethod">
+			<constant>GET</constant>
+		</setHeader>
+		<setHeader headerName="CamelHttpUri">
+			<constant>http://localhost:8083/abc/printRequestParam</constant>
+		</setHeader>
+		<setHeader headerName="CamelHttpQuery">
+			<simple>?input=${header.name}</simple>
+		</setHeader>
+		<!-- <to uri="bean:CamelInputProcessor?method=process" /> -->
+		<to uri="http://localhost:8083/abc" />
+		<process ref="CamelOutputProcessor" />
+
+	</route>
+	<route>
+		<from uri="direct:tata" />
+		<log message="tata route called  the value ${headers.name}" />
+		<!-- <setHeader headerName="nm"> <constant>${headers.name}</constant> </setHeader> -->
+		<setHeader headerName="CamelHttpMethod">
+			<constant>GET</constant>
+		</setHeader>
+		<setHeader headerName="CamelHttpPath">
+			<simple>/abc/${headers.name}/printPathVariable</simple>
+		</setHeader>
+		<!-- <setHeader headerName="CamelHttpPath"> <simple>name=${headers.name}</simple> 
+			</setHeader> -->
+		<setHeader headerName="CamelHttpUri">
+			<constant>http://localhost:8083</constant>
+		</setHeader>
+		<!-- <to uri="bean:CamelInputProcessor?method=process" /> -->
+		<to uri="http://localhost:8083/abc/1234/printPathVariable" />
+		<log message="Response : response recived ${body}" />
+
+	</route>
+	<route>
+		<from uri="direct:testPost" />
+		<log message="testPost route called  the value ${body.name}" />
+		<to uri="bean:CamelInputProcessor?method=process" />
+		<setHeader headerName="CamelHttpMethod">
+			<constant>POST</constant>
+		</setHeader>
+		<setHeader headerName="CamelHttpUri">
+			<simple>http://localhost:8083/abc/updatecustomer</simple>
+		</setHeader>
+		<setHeader headerName="Content-Type">
+			<constant>application/json</constant>
+		</setHeader>
+		<to uri="http://localhost:8083/abc/updatecustomer" />
+		<to uri="bean:CamelOutputProcessor?method=process" />
+		<!-- <log message="Response : response recived ${body}" /> -->
+
+	</route>
+
+</routes>
